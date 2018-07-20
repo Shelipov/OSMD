@@ -1,0 +1,99 @@
+﻿@{
+    ViewData["Title"] = "Контакты"; ViewData["Message"] = "Тут находятся все контактные данные";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<address>
+    Украина, Днепропетровская область<br />
+    Днепр, улица Рабочая 65 <br />
+    <abbr title="Phone">Телефоны:</abbr>
+    +38 066 764 50 90
+</address>                   @*AIzaSyAgz8jjTZp5CsmLfVZChFYs_h7RFXaBR_E*@
+
+@*<script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>*@
+@*<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgz8jjTZp5CsmLfVZChFYs_h7RFXaBR_E&callback=initMap">
+</script>*@
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgz8jjTZp5CsmLfVZChFYs_h7RFXaBR_E&callback=initMap"
+        type="text/javascript"></script>
+
+<style>
+    .stationInfo {
+        height: 150px;
+        width: 250px;
+    }
+</style>
+
+<div id="canvas" style="height: 600px; width:600px;"></div>
+
+<!--Устанавливаем секцию scripts, которая затем будет рендериться на мастер-странице -->
+@section scripts {
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+        GetMap();
+    });
+
+    // Функция загрузки
+    function GetMap() {
+
+        google.maps.visualRefresh = true;
+        // установка основных координат
+        var Dnepr = new google.maps.LatLng(48.450000, 34.98333);
+
+        // Установка общих параметров отображения карты, как масштаб, центральная точка и тип карты
+        var mapOptions = {
+            zoom: 15,
+            center: Dnepr,
+            mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
+        };
+
+        // Встраиваем гугл-карты в элемент на странице и получаем объект карты
+        var map = new google.maps.Map(document.getElementById("canvas"), mapOptions);
+
+        // Настраиваем красный маркер, который будет использоваться для центральной точки
+        var myLatlng = new google.maps.LatLng(48.450000, 34.98333);
+
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            title: 'Координаты'
+        });
+
+        // Берем для маркера иконку с сайта google
+        marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png')
+
+        // Получаем данные
+        $.getJSON('@Url.Action("GetData","Contact")', function (data) {
+            // Проходим по всем данным и устанавливаем для них маркеры
+            $.each(data, function (i, item) {
+                var marker = new google.maps.Marker({
+                    'position': new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    'map': map,
+                    'title': item.PlaceName
+                });
+
+                // Берем для этих маркеров синие иконки с сайта google
+                marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+
+                // Для каждого объекта добавляем доп. информацию, выводимую в отдельном окне
+                var infowindow = new google.maps.InfoWindow({
+                    content: "<div class='stationInfo'><h2>Указатель " + item.PlaceName + " Контакты</h2></div>"
+                });
+
+                // обработчик нажатия на маркер объекта
+                google.maps.event.addListener(marker, 'click', function () {
+                    infowindow.open(map, marker);
+                });
+            })
+        });
+    }
+    </script>
+}
+<a href="viber://add?number=380667645090"><img src="C:\Users\sheli\source\repos\OSMD\OSMD\wwwroot\images\viber.png" style="width:90px;height:60px;"></a>
+
+<address>
+    <strong>Поддержка:</strong> <a href="mailto:sergeshelipov@gmail.com">sergeshelipov@gmail.com</a><br />
+    <strong>Управление:</strong> <a href="mailto:sergeshelipov@gmail.com">sergeshelipov@gmail.com</a>
+</address>

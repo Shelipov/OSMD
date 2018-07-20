@@ -1,0 +1,47 @@
+﻿@model OSMD.Models.News
+
+
+@{
+    ViewData["Title"] = "Create_News";
+}
+
+<h2>ДОБАВИТЬ НОВОСТЬ</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create_News" asp-controller="Home" method="post" enctype="multipart/form-data">
+
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                @*<label asp-for="news" class="control-label">Тема Новости</label>*@
+                <input asp-for="news" type="text" placeholder="Тема" size="80" />@*</input>*@
+                <span asp-validation-for="news" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @*<label asp-for="text" class="control-label">Добавить Новость</label>*@
+                <textarea asp-for="text" placeholder="Написать новость" cols="100" rows="10"></textarea>
+                <span asp-validation-for="text" class="text-danger"></span>
+            </div>
+            <div class="form-group" enctype="multipart/form-data" method="post">
+
+                <label>Загрузка картинок:</label>
+                <input accept="image/*" multiple="multiple" name="Foto_Stream" type="file" class="form-control" />
+                
+
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Добавить" class="btn btn-default" id="btnUpload" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Home" asp-action="About">Ко всем новостям</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<OSMD.Models.Person>
+@*@model OSMD.Models.Person*@
+
+@{
+    ViewData["Title"] = "Create_Avatar";
+}
+
+<h2>Аватар</h2>
+
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create_Avatar" asp-controller="Home" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label>Имя</label>
+                <input name="Name" class="form-control" />
+               
+            </div>
+            <div class="form-group">
+                <label>АВАТАР</label>  
+                <input name="Avatar" type="file" class="form-control" />
+                
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Добавить" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+@*<label class="ns-view-compose-attach-button-computer ns-view-id-133 mail-Compose-Attach-Button" data-key="view=compose-attach-button-computer" title="Прикрепить файлы с компьютера">
+    <svg xmlns="http://www.w3.org/2000/svg" class="svgicon svgicon-mail--Compose-AttachComputer">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svgicon-mail--Compose-AttachComputer">
+           </use>
+    <rect height="100%" width="100%" style="fill: transparent;"></rect>
+        </svg>
+    <input class="mail-Compose-Attach-Popup-Item_computer-controller js-controller" type="file" name="att" tabindex="-1" title="Прикрепить файлы с компьютера" multiple="multiple">
+</label>*@

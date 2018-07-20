@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Новости";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+@using Microsoft.AspNetCore.Identity
+@using OSMD.Models
+@model IEnumerable<OSMD.Models.News>
+<style>
+    .round {
+        border-radius: 100px; /* Радиус скругления */
+        border: 3px solid green; /* Параметры рамки */
+        box-shadow: 0 0 7px #666; /* Параметры тени */
+        /*position: absolute;
+        top: 0;
+        left: 0;
+        /*width: 100%;
+            height: 100%;*/
+        z-index: 99999;
+        width: 100px;
+        height: 100px;*/
+        background-color: rgba(0,0,0,0.5); /*затемнитефон*/
+    }
+</style>
+
+<div>
+    <a asp-controller="Home" asp-action="Create_News">ДОБАВИТЬ НОВОСТЬ</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Avatar_News)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.news)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>        
+       
+        @foreach (var item in Model.Reverse())
+        {
+            <tr>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.date)
+                </td>
+                @if (item.Avatar_News != null) { 
+                <td>
+                    <img class="round" src="data:image/jpeg;base64,@(Convert.ToBase64String(item.Avatar_News))" />
+                   
+                </td>
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item._User)
+                </td>
+                @*<td>
+                    @Html.TextArea(item._User, item.news, 4, 80, new { @class = "form-group" })
+                </td>*@
+                <td>
+                    <a asp-controller="Home" asp-action="View_News"asp-route-id="@item.Id">@Html.DisplayTextFor(modlItem => item.news)</a>
+                  
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a asp-controller="Home" asp-action="Index">На главную</a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
